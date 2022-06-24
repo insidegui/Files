@@ -464,7 +464,7 @@ import AppKit
 public extension File {
     /// Open the file.
     func open() {
-        NSWorkspace.shared.openFile(path)
+        NSWorkspace.shared.open(URL(fileURLWithPath: path))
     }
 }
 
