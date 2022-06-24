@@ -210,6 +210,8 @@ public final class Storage<LocationType: Location> {
     }
 
     private func validatePath() throws {
+        print("-> [Storage] validatePath \(path)")
+
         switch LocationType.kind {
         case .file:
             guard !path.isEmpty else {
@@ -230,6 +232,7 @@ public final class Storage<LocationType: Location> {
             let parentPath = makeParentPath(for: folderPath) ?? "/"
 
             guard fileManager.locationExists(at: parentPath, kind: .folder) else {
+                print("-> [Storage] throwing LocationError for parentPath \(parentPath)")
                 throw LocationError(path: parentPath, reason: .missing)
             }
 
@@ -237,6 +240,7 @@ public final class Storage<LocationType: Location> {
         }
 
         guard fileManager.locationExists(at: path, kind: LocationType.kind) else {
+            print("-> [Storage] throwing LocationError for path \(path)")
             throw LocationError(path: path, reason: .missing)
         }
     }
