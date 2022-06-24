@@ -137,6 +137,7 @@ public extension Location {
     /// - throws: `LocationError` if the item couldn't be renamed.
     func rename(to newName: String, keepExtension: Bool = true) throws {
         guard let parent = parent else {
+            print("Throwing LocationError in \(#file):\(#line) for \(newName)")
             throw LocationError(path: path, reason: .cannotRenameRoot)
         }
 
@@ -215,6 +216,7 @@ public final class Storage<LocationType: Location> {
         switch LocationType.kind {
         case .file:
             guard !path.isEmpty else {
+                print("Throwing LocationError in \(#file):\(#line) for \(path)")
                 throw LocationError(path: path, reason: .emptyFilePath)
             }
         case .folder:
@@ -271,6 +273,7 @@ fileprivate extension Storage {
                 path = newPath.appendingSuffixIfNeeded("/")
             }
         } catch {
+            print("Throwing LocationError in \(#file):\(#line) path:\(path) newPath:\(newPath)")
             throw LocationError(path: path, reason: errorReasonProvider(error))
         }
     }
@@ -279,6 +282,7 @@ fileprivate extension Storage {
         do {
             try fileManager.copyItem(atPath: path, toPath: newPath)
         } catch {
+            print("Throwing LocationError in \(#file):\(#line) path:\(path) newPath:\(newPath)")
             throw LocationError(path: path, reason: .copyFailed(error))
         }
     }
@@ -287,6 +291,7 @@ fileprivate extension Storage {
         do {
             try fileManager.removeItem(atPath: path)
         } catch {
+            print("Throwing LocationError in \(#file):\(#line) path:\(path)")
             throw LocationError(path: path, reason: .deleteFailed(error))
         }
     }
